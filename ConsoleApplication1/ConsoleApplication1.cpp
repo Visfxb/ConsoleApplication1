@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include "Path.h"
 using namespace std;
 
 
@@ -122,10 +123,47 @@ int main()
 
 
 
-	vector<int>::iterator it;
+	/*vector<int>::iterator it;*/
 
 
+	vector<Path> Kharkiv;
+	Kharkiv.push_back(Path(111, "First_1", "Last_1", 20, 5));
+	Kharkiv.push_back(Path(222, "First_2", "Last_2", 15, 10));
+	Kharkiv.push_back(Path(333, "First_3", "Last_3", 13, 10));
+	Kharkiv.push_back(Path(444, "First_4", "Last_4", 25, 15));
+	Kharkiv.push_back(Path(555, "First_5", "Last_5", 24, 12));
 
+	for (auto item : Kharkiv)
+		item.showInfo();
 
+	cout << "-----------------------------------\n";
 
+	int number = 0;
+	cout << "Enter number: ";
+	cin >> number;
+
+	auto it = find_if(Kharkiv.begin(), Kharkiv.end(), [number](Path item) {return item.getNumber() == number; });
+	if (it == Kharkiv.end()) cout << "Not found\n";
+	else {
+		Kharkiv.erase(it);
+		cout << "Removed\n";
+	}
+
+	for (auto item : Kharkiv)
+		item.showInfo();
+	
+	cout << "-----------------------------------\n";
+	it = max_element(Kharkiv.begin(), Kharkiv.end(), [](Path a, Path b) {return a.getLen() < b.getLen(); });
+	it->showInfo();
+	cout << "-----------------------------------\n";
+
+	float limit;
+	cout << "Enter limit: ";
+	cin >> limit;
+	for_each(Kharkiv.begin(), Kharkiv.end(), [limit](Path& item) {
+		if (item.getLen() > limit)
+			item.setPrice(item.getPrice() * 1.15);
+		});
+	for (auto item : Kharkiv)
+		item.showInfo();
 }
